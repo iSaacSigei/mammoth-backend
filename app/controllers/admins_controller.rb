@@ -1,6 +1,15 @@
 class AdminsController < ApplicationController
-    skip_before_action :verify_authenticity_token
-
+    # before_action :require_login, except: [:new, :create]
+  
+    def index
+      @admins = Admin.all
+      render json: @admins
+    end
+    
+    def show
+      @admin = Admin.find(params[:id])
+      render json: @admin
+    end
     def create
         @user = Admin.new(admin_params)
         if @user.save

@@ -1,7 +1,14 @@
 class UsersController < ApplicationController
-    skip_before_action :verify_authenticity_token
+    # before_action :require_login, except: [:new, :create]
+  
     def index
-      render json: User.all
+      @users = User.all.includes(:profile)
+      render json: @users, include: ['profile']
+    end
+    
+    def show
+      @user = User.includes(:profile).find(params[:id])
+      render json: @user, include: ['profile']
     end
     def create
         @user = User.new(user_params)
@@ -14,11 +21,14 @@ class UsersController < ApplicationController
         end
     end
     def update
-        @user=User.find(params[:id])
-        if @user
-          @user.update(user_params)
-        end
+      @user = User.find(params[:id])
+      if @user.update(user_params)
+        render json: @user, include: ['profile'], status: :ok
+      else
+        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
     end
+    
       # def confirm_account
       #   @user = User.find_by_confirmation_token(params[:confirmation_token])
       #   if @user
@@ -31,7 +41,7 @@ class UsersController < ApplicationController
 
       private
       def user_params
-        params.permit(:username, :email, :password, :password_confirmation)
+        params.require(:user).permit(:username, :email, :password, :password_confirmation, profile_attributes: [:state, :city, :street_address, :avatar, :phone])
       end
       
 end
