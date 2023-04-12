@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
     skip_before_action :verify_authenticity_token
-
+    def index
+      render json: User.all
+    end
     def create
         @user = User.new(user_params)
         @user.confirmation_token = SecureRandom.uuid
@@ -10,7 +12,13 @@ class UsersController < ApplicationController
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
-      end
+    end
+    def update
+        @user=User.find(params[:id])
+        if @user
+          @user.update(user_params)
+        end
+    end
       # def confirm_account
       #   @user = User.find_by_confirmation_token(params[:confirmation_token])
       #   if @user
