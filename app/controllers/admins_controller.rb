@@ -9,7 +9,7 @@ class AdminsController < ApplicationController
   
   def show
     @admin = Admin.find(params[:id])
-    render json: @adminGET
+    render json: @admin
   end
 
   def create

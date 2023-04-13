@@ -2,14 +2,15 @@ class UsersController < ApplicationController
     # before_action :require_login, except: [:new, :create]
   
     def index
-      @users = User.all.includes(:profile)
-      render json: @users, include: ['profile']
+      @users = User.all
+      render json: @users, include: ['lands']
     end
     
     def show
-      @user = User.includes(:profile).find(params[:id])
-      render json: @user, include: ['profile']
+      @user = User.includes(:profile, :lands).find(params[:id])
+      render json: @user.as_json(include: { profile: {}, lands: {} })
     end
+    
     def create
         @user = User.new(user_params)
         @user.confirmation_token = SecureRandom.uuid
