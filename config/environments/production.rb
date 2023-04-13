@@ -74,7 +74,17 @@ Rails.application.configure do
 
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
-
+  config.action_mailer.smtp_settings = {
+    address: "smtp.office365.com",
+    port: 587,
+    domain: "outlook.com",
+    user_name: "bettmo1209@outlook.com",
+    password: "vision2020",
+    authentication: "login",
+    enable_starttls_auto: true
+  }
+  
+  
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
   config.action_mailer.default_url_options = { host: 'kiplangatisack.is@gmail.com' }
