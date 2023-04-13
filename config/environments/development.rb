@@ -12,8 +12,17 @@ Rails.application.configure do
   config.eager_load = false
 
   # Show full error reports.
-  config.consider_all_requests_local = true
-
+  config.action_mailer.smtp_settings = {
+    address: "smtp.office365.com",
+    port: 587,
+    domain: "outlook.com",
+    user_name: "bettmo1209@outlook.com",
+    password: "vision2020",
+    authentication: "login",
+    enable_starttls_auto: true
+  }
+  
+  
   # Enable server timing
   config.server_timing = true
 
