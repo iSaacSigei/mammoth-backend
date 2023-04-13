@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_13_073620) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_13_065730) do
   create_table "admins", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
@@ -21,14 +21,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_13_073620) do
 
   create_table "lands", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "admin_id", null: false
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image"
-    t.string "name"
-    t.string "description"
-    t.index ["admin_id"], name: "index_lands_on_admin_id"
+    t.string "title"
+    t.text "description"
+    t.decimal "price"
+    t.string "location"
     t.index ["user_id"], name: "index_lands_on_user_id"
   end
 
@@ -54,7 +53,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_13_073620) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token"
   end
 
-  add_foreign_key "lands", "admins"
   add_foreign_key "lands", "users"
   add_foreign_key "profiles", "users"
 end

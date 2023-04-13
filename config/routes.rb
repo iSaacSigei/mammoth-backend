@@ -15,6 +15,22 @@
 # end
 # config/routes.rb
 Rails.application.routes.draw do
+  resources :users, only: [:index, :create, :show, :update] do
+    resources :lands, only: [:index, :create, :show, :update, :destroy]
+    resource :profile, only: [:show, :create, :update]
+  end
+  resources :admins , only: [:index, :create, :show, :update] do
+    resources :lands, only: [:index, :create, :show, :destroy]
+  end
+
+  get 'confirm_account', to: 'users#confirm_account'
+  post '/login', to: 'sessions#create'
+  
+
+  post '/accept_quotation/:id', to: 'lands#accept_quotation', as: 'accept_quotation'
+  patch '/admins/:admin_id/lands/:land_id', to: 'admins#update_price'
+  
   root 'lands#index' # Replace `lands#index` with the name of your own controller action
   post '/', to: 'lands#create' # Add this line to define a route for POST requests to the root URL
+
 end
