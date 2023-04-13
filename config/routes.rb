@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resource :profile, only: [:show, :create, :update]
   end
   resources :admins , only: [:index, :create, :show, :update] do
-    resources :lands, only: [:index, :create, :show, :destroy]
+    resources :lands, only: [:index, :show, :destroy]
   end
 
   post '/login', to: 'sessions#create'

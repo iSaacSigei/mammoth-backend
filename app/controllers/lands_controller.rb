@@ -1,5 +1,4 @@
 class LandsController < ApplicationController
-    before_action :require_login
     before_action :set_land, only: [:show, :update, :destroy, :accept_quotation, :decline_quotation]
   
     def index
@@ -12,26 +11,27 @@ class LandsController < ApplicationController
     end
   
     def create
-      @land = current_user.lands.build(land_params)
-      if @land.save
-        render json: @land, status: :created
+      if current_user.nil?
+        render json: { errors: "You must log in first" }, status: :unauthorized
+      else
+        @land = current_user.lands.build(land_params)
+        if @land.save
+          render json: @land, status: :created
+        else
+          render json: { errors: @land.errors.full_messages }, status: :unprocessable_entity
+        end
+      end
+    end
+    
+    def update
+      @land = current_user.lands.find(params[:id])
+      if @land.update(land_params)
+        render json: @land
       else
         render json: { errors: @land.errors.full_messages }, status: :unprocessable_entity
       end
     end
-  
-    def update
-        if current_user.role == "User"
-          @land = current_user.lands.find(params[:id])
-          if @land.update(land_params)
-            render json: @land
-          else
-            render json: { errors: @land.errors.full_messages }, status: :unprocessable_entity
-          end
-        else
-          render json: { errors: "Only users can update lands" }, status: :unauthorized
-        end
-      end
+    
   
     def destroy
       if current_user == @land.user || current_user.admin?

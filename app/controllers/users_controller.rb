@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         @user.confirmation_token = SecureRandom.uuid
         if @user.save
           UserMailer.account_confirmation(@user).deliver_now
-          render json: { message: 'User created successfully' }, status: :created
+          render json: @user, status: :created
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
