@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_13_065730) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_13_072108) do
   create_table "admins", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_13_065730) do
     t.text "description"
     t.decimal "price"
     t.string "location"
+    t.string "image"
     t.index ["user_id"], name: "index_lands_on_user_id"
   end
 
