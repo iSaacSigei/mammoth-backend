@@ -21,11 +21,13 @@ class AdminsController < ApplicationController
     end
   end
   def update_price
+    current_admin = current_admin()
     if current_admin.present?
       @land = Land.find(params[:land_id])
+      @user = @land.user # Get the user associated with the land
       if @land.update(price: params[:price])
-        # send email to user with updated land price
-        UserMailer.with(user: @land.user, land: @land).send_quotation_email.deliver_now
+        # Moved the email sending code here
+        UserMailer.send_quotation_email(@user, current_admin, @land).deliver_now # Pass the required arguments to the send_quotation_email method
         render json: @land
       else
         render json: { errors: @land.errors.full_messages }, status: :unprocessable_entity
@@ -34,6 +36,7 @@ class AdminsController < ApplicationController
       render json: { errors: "Only admins can update land price" }, status: :unauthorized
     end
   end
+  
   
   
   # def give_quotation

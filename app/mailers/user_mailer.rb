@@ -10,7 +10,7 @@ class UserMailer < ApplicationMailer
     @user = user
     @admin = admin
     @land = land
-    mail(to: @user.email, subject: "Quotation for #{land.name}")
+    mail(to: @user.email, subject: "Quotation for #{user.username}")
   end
   
   def quotation_accepted_email(land)

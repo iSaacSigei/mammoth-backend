@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-</head>
-<body>
-  <h2>Quotation for <%= @land.name %></h2>
-  <p>Hello <%= @user.name %>,</p>
-  <p>We have received your request for a quotation for the land <%= @land.name %>. Our admin <%= @admin.name %> has provided the following quotation:</p>
-  <p>Quotation: <%= @land.quotation %></p>
-  <p>Please click on the button below to accept or decline the quotation:</p>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td>
-        <table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td align="center" style="border-radius: 5px;" bgcolor="#ED2939">
-              <a href="<%= accept_quotation_url %>" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; padding: 12px 18px; border: 1px solid #ED2939; display: inline-block;">Accept</a>
-            </td>
-            <td style="width: 20px;"></td>
-            <td align="center" style="border-radius: 5px;" bgcolor="#4CAF50">
-              <a href="<%= decline_quotation_url %>" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; padding: 12px 18px; border: 1px solid #4CAF50; display: inline-block;">Decline</a>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <p>Thank you,</p>
-  <p>The Land Selling Team</p>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Quotation for <%= @land.title %></title>
+  </head>
+  <body>
+    <h2>Quotation for <%= @land.title %></h2>
+    <p>Hello <%= @user.username %>,</p>
+    <p>We have received your request for a quotation for the land <%= @land.title %>. Our admin <%= @admin.username %> has provided the following quotation:</p>
+    <p>Quotation: <%= @land.price %></p>
+    <p>Please click on the button below to accept or decline the quotation:</p>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="center" style="border-radius: 5px;" bgcolor="#ED2939">
+<a href="" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; padding: 12px 18px; border: 1px solid #ED2939; display: inline-block;">Accept</a>
+              </td>
+              <td style="width: 20px;"></td>
+              <td align="center" style="border-radius: 5px;" bgcolor="#4CAF50">
+                <a href="" target="_blank" style="font-size: 16px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; border-radius: 5px; padding: 12px 18px; border: 1px solid #4CAF50; display: inline-block;">Decline</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <p>Thank you,</p>
+    <p>The Land Selling Team</p>
+  </body>
 </html>
