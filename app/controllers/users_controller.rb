@@ -1,24 +1,35 @@
 class UsersController < ApplicationController
-    skip_before_action :verify_authenticity_token
+    # before_action :require_login, except: [:new, :create]
+  
     def index
-      render json: User.all
+      @users = User.all
+      render json: @users, include: ['lands']
     end
+    
+    def show
+      @user = User.includes(:profile, :lands).find(params[:id])
+      render json: @user.as_json(include: { profile: {}, lands: {} })
+    end
+    
     def create
         @user = User.new(user_params)
         @user.confirmation_token = SecureRandom.uuid
         if @user.save
           UserMailer.account_confirmation(@user).deliver_now
-          render json: { message: 'User created successfully' }, status: :created
+          render json: @user, status: :created
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
     end
     def update
-        @user=User.find(params[:id])
-        if @user
-          @user.update(user_params)
-        end
+      @user = User.find(params[:id])
+      if @user.update(user_params)
+        render json: @user, include: ['profile'], status: :ok
+      else
+        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      end
     end
+    
       # def confirm_account
       #   @user = User.find_by_confirmation_token(params[:confirmation_token])
       #   if @user
@@ -31,7 +42,7 @@ class UsersController < ApplicationController
 
       private
       def user_params
-        params.permit(:username, :email, :password, :password_confirmation)
+        params.permit(:username, :email, :password, :password_confirmation, profile_attributes: [:state, :city, :street_address, :avatar, :phone])
       end
       
 end
