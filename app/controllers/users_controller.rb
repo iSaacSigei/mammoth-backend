@@ -5,12 +5,17 @@ class UsersController < ApplicationController
       @users = User.all
       render json: @users, include: ['lands']
     end
-    
     def show
-      @user = User.includes(:profile, :lands).find(params[:id])
-      render json: @user.as_json(include: { profile: {}, lands: {} })
+      user = User.includes(:profile, :lands).find_by(id: session[:user_id])
+      if user
+        render json: user.as_json(include: { profile: {}, lands: {} }), status: :ok
+      else
+        render json: {error: "Not authorized"}, status: :unauthorized
+      end
     end
     
+    
+  
     def create
         @user = User.new(user_params)
         @user.confirmation_token = SecureRandom.uuid
