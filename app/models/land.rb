@@ -9,10 +9,13 @@ class Land < ApplicationRecord
   before_validation :generate_parcel_id, on: :create
   
   def generate_parcel_id
+    puts "Starting generate_parcel_id..."
     loop do
       self.parcel_id = "JPG#{SecureRandom.alphanumeric(6).upcase}#{SecureRandom.random_number(100000)}"
+      puts "Generated parcel_id: #{parcel_id}"
       break unless Land.exists?(parcel_id: parcel_id)
     end
-  end
-  
+    puts "Ending generate_parcel_id..."
+    self.parcel_id # return the generated parcel_id
+  end  
 end

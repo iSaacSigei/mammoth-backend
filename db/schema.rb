@@ -25,11 +25,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_15_173939) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image"
     t.string "title"
     t.text "description"
     t.decimal "price"
     t.string "location"
-    t.string "image"
+    t.string "images"
     t.string "street_address"
     t.string "city"
     t.string "state"
