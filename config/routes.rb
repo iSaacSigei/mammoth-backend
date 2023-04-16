@@ -16,15 +16,18 @@
 # config/routes.rb
 Rails.application.routes.draw do
   resources :users, only: [:index, :create, :show, :update] do
-    resources :lands, only: [:index, :create, :show, :update, :destroy]
+    resources :lands, only: [:create, :show, :update, :destroy]
     resource :profile, only: [:show, :create, :update]
   end
   resources :admins , only: [:index, :create, :show, :update] do
     resources :lands, only: [:index, :show, :destroy]
+    resources :users, only: [:index]
   end
 
-  post '/login', to: 'sessions#create'
-  get 'user', to: "users#show"
+  post '/user_login', to: 'sessions#create_user_session'
+  post '/admin_login', to: 'sessions#create_admin_session'  
+  get '/user', to: "users#show"
+  get '/admin', to: "admins#show"
   post '/accept_quotation/:id', to: 'lands#accept_quotation', as: 'accept_quotation'
   patch '/admins/:admin_id/lands/:land_id', to: 'admins#update_price'
   

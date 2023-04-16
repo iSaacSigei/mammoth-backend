@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     end
     
     def current_admin
-        @current_admin ||= Admin.find_by_id(session[:admin_id]) if session[:admin_id]
+        @current_admin ||= Admin.find(session[:admin_id]) if session[:admin_id]
     end
       
 end

@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_14_130252) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_15_173939) do
   create_table "admins", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "avatar"
   end
 
   create_table "lands", force: :cascade do |t|
@@ -33,6 +34,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_14_130252) do
     t.string "city"
     t.string "state"
     t.string "zipcode"
+    t.integer "admin_id"
+    t.string "parcel_id", limit: 8
+    t.index ["admin_id"], name: "index_lands_on_admin_id"
+    t.index ["parcel_id"], name: "index_lands_on_parcel_id"
     t.index ["user_id"], name: "index_lands_on_user_id"
   end
 
@@ -58,6 +63,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_14_130252) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token"
   end
 
+  add_foreign_key "lands", "admins"
   add_foreign_key "lands", "users"
   add_foreign_key "profiles", "users"
 end

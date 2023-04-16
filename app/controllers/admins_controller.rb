@@ -8,7 +8,7 @@ class AdminsController < ApplicationController
   end
   
   def show
-    @admin = Admin.find(params[:id])
+    @admin = Admin.find_by(id: session[:admin_id])
     render json: @admin
   end
 
