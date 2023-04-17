@@ -24,15 +24,12 @@ class LandsController < ApplicationController
     else
       @land = current_user.lands.build(land_params)
       if @land.save
-        @land.image.attach(params[:image]) # attach the image
         render json: @land, status: :created
       else
         render json: { errors: @land.errors.full_messages }, status: :unprocessable_entity
       end
     end
   end
-  
-  
 
   def update
     @land = current_user.lands.find(params[:id])
@@ -77,6 +74,6 @@ class LandsController < ApplicationController
   end
 
   def land_params
-    params.require(:land).permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :admin_id, images:[])
+    params.require(:land).permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :admin_id, :image)
   end
 end
