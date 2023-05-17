@@ -10,6 +10,7 @@ Rails.application.configure do
 
   # Do not eager load code on boot.
   config.eager_load = false
+  config.hosts << "mammoth-deploy-2-production.up.railway.app"
 
   # Show full error reports.
   config.action_mailer.smtp_settings = {
