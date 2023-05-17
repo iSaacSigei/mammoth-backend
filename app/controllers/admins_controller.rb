@@ -1,17 +1,9 @@
 class AdminsController < ApplicationController
-  before_action :require_login, only: [:update_price]
-  # before_action :set_land, only: [:update_price]
+  before_action :authenticate_admin, only: [:show]
 
-  def index
-    @admins = Admin.all
-    render json: @admins
-  end
-  
   def show
-    @admin = Admin.find_by(id: session[:admin_id])
-    render json: @admin
+    render json: current_admin, status: :ok
   end
-
   def create
     @user = Admin.new(admin_params)
     if @user.save
@@ -21,7 +13,6 @@ class AdminsController < ApplicationController
     end
   end
   def update_price
-    current_admin = current_admin()
     if current_admin.nil?
       render json: { errors: "Only admins can update land price" }, status: :unauthorized
     else

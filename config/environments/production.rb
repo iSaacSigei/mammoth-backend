@@ -5,13 +5,26 @@ Rails.application.configure do
 
   # Code is not reloaded between requests.
   config.cache_classes = true
+  config.hosts << "mammoth-deploy-2-production.up.railway.app"
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
-
+  config.middleware.insert_after ActionDispatch::Cookies, ActionDispatch::Session::CookieStore, key: '_myapp_session', same_site: :none, secure: true, domain: 'http:///localhost:4000'
+  config.middleware.insert_before 0, Rack::Cors do
+    allow do
+      origins '*'
+      resource(
+        '*',
+        headers: :any,
+        credentials: true,
+        methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      )
+    end
+  end
+  
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
@@ -51,6 +64,7 @@ Rails.application.configure do
   # Include generic and useful information about system operation, but avoid logging too much
   # information to avoid inadvertent exposure of personally identifiable information (PII).
   config.log_level = :info
+  config.force_ssl = true
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]

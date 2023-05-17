@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_231829) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "avatar"
+    t.string "token"
   end
 
   create_table "lands", force: :cascade do |t|
@@ -53,12 +54,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_231829) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "image"
     t.string "title"
     t.text "description"
     t.decimal "price"
     t.string "location"
-    t.string "images"
+    t.string "image"
     t.string "street_address"
     t.string "city"
     t.string "state"
@@ -89,6 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_231829) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "confirmation_token"
+    t.string "token"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token"
   end
 

@@ -17,12 +17,14 @@ class LandsController < ApplicationController
       render json: { errors: "You must be an admin to view this page." }, status: :unauthorized
     end
   end
-
   def create
     if current_user.nil?
       render json: { errors: "You must log in first" }, status: :unauthorized
     else
       @land = current_user.lands.build(land_params)
+      if params[:land][:image].present?
+        @land.image = params[:land][:image] # assign the uploaded image to the uploader
+      end
       if @land.save
         render json: @land, status: :created
       else
@@ -74,6 +76,7 @@ class LandsController < ApplicationController
   end
 
   def land_params
+    params.permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :admin_id, image:[])
     params.require(:land).permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :admin_id, :image)
   end
 end

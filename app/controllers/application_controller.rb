@@ -1,30 +1,35 @@
-class ApplicationController < ActionController::Base
-    skip_before_action :verify_authenticity_token
-
-    # app/controllers/application_controller.rb
-    # before_action :require_login
+class ApplicationController < ActionController::API
+  include ActionController::Cookies
   
-    private
-    
-    def require_login
-      unless logged_in?
-        flash[:error] = "You must be logged in to access this section"
-        redirect_to login_path # or redirect_to root_path if you prefer
-      end
+  private
+  
+  def current_user
+    token = cookies.signed[:jwt]
+    return unless token
+    payload = JwtUtils.decode(token)
+    User.find_by(id: payload['user_id'])
+  rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def current_admin
+    token = cookies.signed[:jwt_admin]
+    return unless token
+    payload = JwtUtils.decode(token)
+    Admin.find_by(id: payload['admin_id'])
+  rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+    nil
+  end
+
+  def authenticate_user
+    unless current_user
+      render json: { error: "User must login before accessing this resource" }, status: :unauthorized
     end
-    
-    def logged_in?
-      current_user || current_admin
+  end
+
+  def authenticate_admin
+    unless current_admin
+      render json: { error: "Admin must login before accessing this resource" }, status: :unauthorized
     end
-    
-    def current_user
-      @current_user ||= User.find(session[:user_id]) if session[:user_id]
-    end
-    
-    def current_admin
-        @current_admin ||= Admin.find(session[:admin_id]) if session[:admin_id]
-    end
-      
+  end
 end
-  
-

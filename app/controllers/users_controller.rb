@@ -1,54 +1,39 @@
 class UsersController < ApplicationController
-    # before_action :require_login, except: [:new, :create]
+  before_action :authenticate_user, only: [:show]
   
-    def index
-      @admin = Admin.find(params[:admin_id])
-      @users = @admin.users.includes(:lands)
-      render json: @users.as_json(include: { lands: {} }), status: :ok
-    end
-    def show
-      user = User.includes(:profile, :lands).find_by(id: session[:user_id])
-      if user
-        render json: user.as_json(include: { profile: {}, lands: {} }), status: :ok
-      else
-        render json: {error: "Not authorized"}, status: :unauthorized
-      end
-    end
-    
-    
-  
-    def create
-        @user = User.new(user_params)
-        @user.confirmation_token = SecureRandom.uuid
-        if @user.save
-          UserMailer.account_confirmation(@user).deliver_now
-          render json: @user, status: :created
-        else
-          render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-        end
-    end
-    def update
-      @user = User.find(params[:id])
-      if @user.update(user_params)
-        render json: @user, include: ['profile'], status: :ok
-      else
-        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-      end
-    end
-    
-      # def confirm_account
-      #   @user = User.find_by_confirmation_token(params[:confirmation_token])
-      #   if @user
-      #     @user.confirm!
-      #     redirect_to login_path, notice: 'Your account has been confirmed. Please log in to continue.'
-      #   else
-      #     redirect_to root_path, alert: 'Invalid confirmation link.'
-      #   end
-      # end
+  def show
+    render json: current_user, status: :ok
+  end
 
-      private
-      def user_params
-        params.permit(:username, :email, :password, :password_confirmation, profile_attributes: [:state, :city, :street_address, :avatar, :phone])
-      end
-      
+  def index
+    @admin = Admin.find(params[:admin_id])
+    @users = @admin.users.includes(:lands)
+    render json: @users.as_json(include: { lands: {} }), status: :ok
+  end
+
+  def create
+    @user = User.new(user_params)
+    @user.confirmation_token = SecureRandom.uuid
+    if @user.save
+      UserMailer.account_confirmation(@user).deliver_now
+      render json: @user, status: :created
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      render json: @user, include: ['profile'], status: :ok
+    else
+      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def user_params
+    params.permit(:username, :email, :password, :token, :password_confirmation, profile_attributes: [:state, :city, :street_address, :avatar, :phone])
+  end
 end
