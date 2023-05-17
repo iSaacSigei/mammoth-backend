@@ -20,4 +20,13 @@ class SessionsController < ApplicationController
       render json: { error: "Invalid email or password" }, status: :unprocessable_entity
     end
   end
+  def destroy_user_session
+    session[:user_id] = nil
+    render json: { message: "Logged out successfully" }, status: :ok
+  end
+
+  def destroy_admin_session
+    session[:admin_id] = nil
+    render json: { message: "Logged out successfully" }, status: :ok
+  end
 end

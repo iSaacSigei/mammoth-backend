@@ -7,7 +7,7 @@ class UsersController < ApplicationController
       render json: @users.as_json(include: { lands: {} }), status: :ok
     end
     def show
-      user = User.includes(:profile, :lands).find_by(id: session[:user_id])
+      user = User.find_by(id: session[:user_id])
       if user
         render json: user.as_json(include: { profile: {}, lands: {} }), status: :ok
       else
