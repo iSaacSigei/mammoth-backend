@@ -76,7 +76,6 @@ class LandsController < ApplicationController
   end
 
   def land_params
-    params.permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :admin_id, image:[])
-    params.require(:land).permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :admin_id, :image)
+    params.permit(:title, :description, :location, :street_address, :city, :state, :zipcode, :status, :admin_id, image:[])
   end
 end
